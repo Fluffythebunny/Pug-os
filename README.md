@@ -2,6 +2,8 @@
 
 A sleek and powerful web-based operating system with real-time app development capabilities and an integrated app store.
 
+[live demo](https://pug-os.pages.dev)
+
 ## Features
 
 - 🖥️ Modern Desktop Interface
