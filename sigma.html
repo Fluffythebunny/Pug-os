@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PugOS Credits</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #000428, #004e92);
+            background-size: 200% 200%;
+            animation: gradientShift 10s infinite alternate ease-in-out;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .credits-content {
+            width: 90vw;
+            height: auto;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            overflow-y: auto;
+        }
+
+        .credits-content.show {
+            opacity: 1;
+            pointer-events: auto;
+            animation: framePulse 5s infinite alternate ease-in-out;
+        }
+
+        @keyframes framePulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        .credit-item {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            letter-spacing: var(--letter-spacing, 0);
+            margin: 2px 0;
+            padding: 0px 0;
+            width: auto;
+        }
+
+        .credit-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .credit-item h1, .credit-item h2 {
+            font-size: min(2em, 5vw);
+            font-weight: 800;
+            background: linear-gradient(45deg, #fff, #7dd3fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            white-space: nowrap;
+        }
+
+        .credit-item h1, .credit-item h2, .credit-item p {
+    margin: 0;
+    padding: 0;
+}
+
+        .credit-item p {
+            font-size: min(1.2em, 2.5vw);
+            font-weight: 300;
+            animation: textPulse 3s infinite alternate ease-in-out;
+        }
+
+        @keyframes textPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        .start-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: min(20px, 3vw) min(60px, 6vw);
+            font-size: min(24px, 4vw);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 15px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .start-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <button class="start-button">Start Credits</button>
+    <audio id="bgMusic" src="https://cdn.pixabay.com/audio/2024/11/10/audio_becea02136.mp3" crossorigin="anonymous"></audio>
+    
+    <div class="credits-content">
+        <div class="credit-item">
+            <h1>PugOS</h1>
+        </div>
+        <div class="credit-item">
+            <h2>Created By</h2>
+            <p>Fluffythebunny/Pugls</p>
+        </div>
+        <div class="credit-item">
+            <h2>Technologies</h2>
+            <p>JavaScript</p>
+            <p>Monaco Editor</p>
+            <p>GitHub API</p>
+        </div>
+        <div class="credit-item">
+            <h2>Special Thanks</h2>
+            <p>Lurcherr(making the song)</p>
+            <p>The hack club team (Making highseas)</p>
+            <p>The hack club members(motivating me)</p>
+        </div>
+        <div class="credit-item">
+            <h2>Made With ❤️</h2>
+        </div>
+    </div>
+
+    <script>
+        const startButton = document.querySelector('.start-button');
+        const music = document.getElementById('bgMusic');
+        const credits = document.querySelectorAll('.credit-item');
+        let audioContext, analyser, dataArray;
+
+        startButton.addEventListener('click', () => {
+            startButton.style.display = 'none';
+            document.querySelector('.credits-content').classList.add('show');
+            credits.forEach(credit => credit.classList.add('visible'));
+
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+
+            const source = audioContext.createMediaElementSource(music);
+            source.connect(analyser);
+            analyser.connect(audioContext.destination);
+
+            analyser.fftSize = 64;
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+            music.play();
+            animate();
+        });
+
+        function animate() {
+            analyser.getByteFrequencyData(dataArray);
+
+            const bass = dataArray.slice(0, 8).reduce((a, b) => a + b) / 8;
+            const mids = dataArray.slice(8, 16).reduce((a, b) => a + b) / 8;
+            const highs = dataArray.slice(16, 24).reduce((a, b) => a + b) / 8;
+
+            credits.forEach((credit, index) => {
+                const intensity = [bass, mids, highs][index % 3] / 255;
+
+                const scale = 0.9 + (intensity * 0.3);
+                const glow = intensity * 40;
+                const letterSpacing = intensity * 5;
+
+                credit.style.setProperty('--letter-spacing', `${letterSpacing}px`);
+                credit.style.transform = `scale(${scale})`;
+            });
+
+            requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+</html>

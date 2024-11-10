@@ -1,0 +1,401 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+#desktop {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(45deg, #2b3244, #1a1f2c);
+    position: relative;
+    overflow: hidden;
+}
+  #desktop-icons {
+      padding: 20px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 48px);
+  }
+
+  .desktop-icon {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      user-select: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+  }
+
+  .desktop-icon:hover {
+      background: rgba(255, 255, 255, 0.1);
+  }
+
+  .desktop-icon i {
+      font-size: 32px;
+      margin-bottom: 8px;
+      pointer-events: none;
+  }
+
+  .icon-name {
+      text-align: center;
+      font-size: 12px;
+      max-width: 90px;
+      word-wrap: break-word;
+      pointer-events: none;
+  }
+#taskbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 48px;
+    background: rgba(23, 23, 23, 0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    box-shadow: 0 -1px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.taskbar-app {
+    height: 40px;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+    margin-right: 4px;
+}
+
+.taskbar-app:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.taskbar-app.active {
+    background: rgba(255,255,255,0.15);
+}
+
+.taskbar-app i {
+    font-size: 16px;
+}
+
+#system-tray {
+    margin-left: auto;
+    margin-right: 20px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#clock {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.window {
+    position: absolute;
+    background: rgba(28, 28, 28, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    min-width: 400px;
+    min-height: 300px;
+    animation: windowOpen 0.3s ease-out;
+}
+
+.window-header {
+    background: rgba(40, 40, 40, 0.95);
+    padding: 8px 12px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.window-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.window-controls button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.window-controls button:hover {
+    opacity: 0.8;
+}
+
+.close { background: #ff5f57; }
+.minimize { background: #febc2e; }
+.maximize { background: #28c840; }
+
+.window-content {
+    height: calc(100% - 35px);
+    overflow: auto;
+}
+
+.vscode-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.vscode-toolbar {
+    padding: 8px;
+    background: #252526;
+    border-bottom: 1px solid #3c3c3c;
+    display: flex;
+    gap: 8px;
+}
+
+.vscode-toolbar button {
+    background: #0066b8;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.vscode-toolbar button:hover {
+    background: #005ba4;
+}
+
+.editor-tabs {
+    display: flex;
+    background: #252526;
+    border-bottom: 1px solid #3c3c3c;
+}
+
+.editor-tabs .tab {
+    padding: 8px 16px;
+    color: #969696;
+    cursor: pointer;
+    border-right: 1px solid #3c3c3c;
+    user-select: none;
+}
+
+.editor-tabs .tab.active {
+    background: #1e1e1e;
+    color: white;
+    border-bottom: 2px solid #007acc;
+}
+
+.editor-container {
+    flex: 1;
+    height: calc(100% - 80px);
+}
+
+@keyframes windowOpen {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes windowClose {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+}
+
+.app-gallery {
+    padding: 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 24px;
+    background: #1e1e1e;
+}
+
+.app-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.app-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+.app-card i {
+    font-size: 32px;
+    margin-bottom: 12px;
+    color: #007acc;
+}
+
+.app-card span {
+    font-size: 14px;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+.app-controls {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.app-controls button {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.app-controls button:first-child {
+    background: #007acc;
+    color: white;
+}
+
+.app-controls button:first-child:hover {
+    background: #0066aa;
+}
+
+.app-controls button:last-child {
+    background: #dc3545;
+    color: white;
+}
+
+.app-controls button:last-child:hover {
+    background: #bb2d3b;
+}
+
+.app-store {
+    padding: 24px;
+    background: #1e1e1e;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.app-store-search {
+    display: flex;
+    gap: 12px;
+}
+
+.app-store-search input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-size: 14px;
+}
+
+.app-store-search button {
+    padding: 0 20px;
+    background: #007acc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.app-store-search button:hover {
+    background: #0066aa;
+}
+
+.featured-apps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.store-app-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+}
+
+.store-app-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+.store-app-card i {
+    font-size: 32px;
+    color: #007acc;
+}
+
+.app-info {
+    flex: 1;
+}
+
+.app-info h3 {
+    color: white;
+    margin-bottom: 4px;
+}
+
+.app-info p {
+    color: #969696;
+    font-size: 12px;
+}
+
+.install-btn {
+    background: #007acc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.install-btn:hover {
+    background: #0066aa;
+}
